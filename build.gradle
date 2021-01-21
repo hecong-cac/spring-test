@@ -1,0 +1,76 @@
+buildscript {
+    ext {
+        springBootVersion = '2.4.2'
+        rootProjectName = 'spring-test'
+        group = 'com.example'
+        version = '0.0.1-SNAPSHOT'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+        }
+    }
+
+    dependencies {
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+    sourceCompatibility = '1.8'
+
+    ext {
+        projectName = "$rootProjectName-$project.name"
+    }
+}
+
+project(':web') {
+    apply plugin: 'org.springframework.boot'
+
+    bootJar {
+        mainClassName = "com.example.springtest.HelloController"
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        api project(':service')
+    }
+}
+
+project(':service') {
+    jar {
+        baseName = projectName
+    }
+
+    dependencies {
+
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        api project(':dao')
+    }
+}
+
+project(':dao') {
+    jar {
+        baseName = projectName
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        runtimeOnly 'com.h2database:h2'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+    }
+}
