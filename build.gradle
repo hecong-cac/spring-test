@@ -28,6 +28,7 @@ subprojects {
     }
 
     dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
 
@@ -42,12 +43,12 @@ project(':web') {
     apply plugin: 'org.springframework.boot'
 
     bootJar {
-        mainClassName = "com.example.springtest.HelloController"
+        mainClassName = "com.example.springtest.SpringTestApplication"
     }
 
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-web'
         api project(':service')
+        api project(':dao')
     }
 }
 
@@ -58,7 +59,6 @@ project(':service') {
 
     dependencies {
 
-        implementation 'org.springframework.boot:spring-boot-starter-web'
         api project(':dao')
     }
 }
@@ -71,6 +71,5 @@ project(':dao') {
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         runtimeOnly 'com.h2database:h2'
-        implementation 'org.springframework.boot:spring-boot-starter-web'
     }
 }
