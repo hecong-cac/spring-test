@@ -37,6 +37,11 @@ subprojects {
     ext {
         projectName = "$rootProjectName-$project.name"
     }
+    
+    test {
+        useJUnitPlatform()
+    }
+    
 }
 
 project(':web') {
