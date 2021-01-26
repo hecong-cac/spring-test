@@ -63,7 +63,7 @@ project(':service') {
     }
 
     dependencies {
-
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         api project(':dao')
     }
 }
