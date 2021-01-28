@@ -8,4 +8,9 @@ public class GreetingServiceImpl implements GreetingService {
     public String greet() {
         return "Hello, World";
     }
+
+    @Override
+    public String createTempPassword(String username) {
+        return "Hello " + username;
+    }
 }

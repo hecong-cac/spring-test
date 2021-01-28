@@ -7,14 +7,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final GreetingService greetingService;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, GreetingService greetingService) {
         this.userRepository = userRepository;
+        this.greetingService = greetingService;
     }
 
     @Override
     public User getUserByUserName(String name) {
-        return userRepository.findUserByName(name);
-
+        User userByName = userRepository.findUserByName(name);
+        if (userByName == null) {
+            return new User("Guest", null, null);
+        }
+        String tempPassword = greetingService.createTempPassword(userByName.getName());
+        return new User(userByName.getName(), tempPassword, userByName.getUserId());
     }
 }
